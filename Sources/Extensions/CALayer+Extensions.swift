@@ -70,6 +70,7 @@ public extension CALayer {
         pulseAnimation.duration = 1
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         pulseAnimation.autoreverses = true
+        pulseAnimation.isRemovedOnCompletion = false
         pulseAnimation.repeatCount = .infinity
         return pulseAnimation
     }
@@ -88,7 +89,8 @@ public extension CALayer {
         animGroup.duration = 1.5
         animGroup.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
         animGroup.repeatCount = .infinity
-        
+        animGroup.isRemovedOnCompletion = false
+
         return animGroup
     }
     
