@@ -11,10 +11,14 @@ import UIKit
 struct RecoverableViewState {
     var backgroundColor: UIColor?
     var cornerRadius: CGFloat
-    var clipToBounds: Bool
+    var clipsToBounds: Bool
+    var masksToBounds: Bool
+    var isHidden: Bool
+    var isUserInteractionEnabled: Bool
     
     // UI text
     var text: String?
+    var textColor: UIColor?
     
     // UI image
     var image: UIImage?
@@ -23,7 +27,10 @@ struct RecoverableViewState {
 extension RecoverableViewState {
     init(view: UIView) {
         self.backgroundColor = view.backgroundColor
-        self.clipToBounds = view.layer.masksToBounds
+        self.clipsToBounds = view.clipsToBounds
+        self.masksToBounds = view.layer.masksToBounds
         self.cornerRadius = view.layer.cornerRadius
+        self.isHidden = view.isHidden
+        self.isUserInteractionEnabled = view.isUserInteractionEnabled
     }
 }

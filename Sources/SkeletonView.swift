@@ -27,14 +27,15 @@ public extension UIView {
     
     func startSkeletonAnimation(_ anim: SkeletonLayerAnimation? = nil) {
         skeletonIsAnimated = true
-        subviewsSkeletonables.recursiveSearch(leafBlock: startSkeletonLayerAnimationBlock(anim)) { subview in
+        
+        subviewsToSkeleton.recursiveSearch(leafBlock: startSkeletonLayerAnimationBlock(anim)) { subview in
             subview.startSkeletonAnimation(anim)
         }
     }
 
     func stopSkeletonAnimation() {
         skeletonIsAnimated = false
-        subviewsSkeletonables.recursiveSearch(leafBlock: stopSkeletonLayerAnimationBlock) { subview in
+        subviewsToSkeleton.recursiveSearch(leafBlock: stopSkeletonLayerAnimationBlock) { subview in
             subview.stopSkeletonAnimation()
         }
     }
@@ -52,10 +53,17 @@ extension UIView {
     fileprivate func recursiveShowSkeleton(withType type: SkeletonType, usingColors colors: [UIColor], animated: Bool, animation: SkeletonLayerAnimation?, root: UIView? = nil) {
         addDummyDataSourceIfNeeded()
 
-        subviewsSkeletonables.recursiveSearch(leafBlock: {
+        saveViewState()
+
+        guard isSkeletonable else {
+            isHidden = true
+            return
+        }
+        
+        subviewsToSkeleton.recursiveSearch(leafBlock: {
+            
             guard !isSkeletonActive else { return }
-            isUserInteractionEnabled = false
-            saveViewState()
+
             (self as? PrepareForSkeleton)?.prepareViewForSkeleton()
             addSkeletonLayer(withType: type, usingColors: colors, animated: animated, animation: animation)
         }) { subview in
@@ -69,9 +77,12 @@ extension UIView {
     
     fileprivate func recursiveHideSkeleton(reloadDataAfter reload: Bool, root: UIView? = nil) {
         removeDummyDataSourceIfNeeded()
-        isUserInteractionEnabled = true
-        subviewsSkeletonables.recursiveSearch(leafBlock: {
-            recoverViewState(forced: false)
+        
+        recoverViewState(forced: false)
+
+        guard isSkeletonable else { return }
+
+        subviewsToSkeleton.recursiveSearch(leafBlock: {
             removeSkeletonLayer()
         }) { subview in
             subview.recursiveHideSkeleton(reloadDataAfter: reload)

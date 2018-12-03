@@ -70,7 +70,7 @@ struct SkeletonLayer {
         self.holder = holder
         self.maskLayer = type.layer
         self.maskLayer.anchorPoint = .zero
-        self.maskLayer.bounds = holder.maxBoundsEstimated
+        self.maskLayer.bounds = holder.bounds
         addMultilinesIfNeeded()
         self.maskLayer.tint(withColors: colors)
     }
