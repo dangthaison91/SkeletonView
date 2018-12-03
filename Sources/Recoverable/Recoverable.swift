@@ -18,6 +18,13 @@ extension UIView: Recoverable {
     
     @objc func saveViewState() {
         viewState = RecoverableViewState(view: self)
+        setSkeletonViewState()
+    }
+    
+    private func setSkeletonViewState() {
+        isUserInteractionEnabled = false
+        layer.masksToBounds = true
+        clipsToBounds = true
     }
     
     @objc func recoverViewState(forced: Bool) {
@@ -25,8 +32,9 @@ extension UIView: Recoverable {
         isHidden = safeViewState.isHidden
         isUserInteractionEnabled = safeViewState.isUserInteractionEnabled
         
+        clipsToBounds = safeViewState.clipsToBounds
         layer.cornerRadius = safeViewState.cornerRadius
-        layer.masksToBounds = safeViewState.clipToBounds
+        layer.masksToBounds = safeViewState.masksToBounds
         
         if safeViewState.backgroundColor != backgroundColor || forced {
             backgroundColor = safeViewState.backgroundColor
