@@ -33,7 +33,6 @@ extension UIView: Recoverable {
         layer.cornerRadius = safeViewState.cornerRadius
         layer.masksToBounds = safeViewState.clipToBounds
         
-        
         if safeViewState.backgroundColor != backgroundColor || forced {
             backgroundColor = safeViewState.backgroundColor
         }
@@ -44,11 +43,13 @@ extension UILabel {
     override func saveViewState() {
         super.saveViewState()
         viewState?.text = text
+        viewState?.textColor = textColor
     }
     
     override func recoverViewState(forced: Bool) {
         super.recoverViewState(forced: forced)
         text = text == " " || forced ? viewState?.text : text
+        textColor = textColor == .clear || forced ? viewState?.textColor : textColor
     }
 }
 
@@ -56,11 +57,13 @@ extension UITextView {
     override func saveViewState() {
         super.saveViewState()
         viewState?.text = text
+        viewState?.textColor = textColor
     }
     
     override func recoverViewState(forced: Bool) {
         super.recoverViewState(forced: forced)
         text = text == " " || forced ? viewState?.text : text
+        textColor = textColor == .clear || forced ? viewState?.textColor : textColor
     }
 }
 
