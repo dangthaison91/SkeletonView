@@ -22,9 +22,12 @@ extension UIView: Recoverable {
     
     @objc func recoverViewState(forced: Bool) {
         guard let safeViewState = viewState else { return }
+        isHidden = safeViewState.isHidden
+        isUserInteractionEnabled = safeViewState.isUserInteractionEnabled
         
         layer.cornerRadius = safeViewState.cornerRadius
         layer.masksToBounds = safeViewState.clipToBounds
+        
         
         if safeViewState.backgroundColor != backgroundColor || forced {
             backgroundColor = safeViewState.backgroundColor
